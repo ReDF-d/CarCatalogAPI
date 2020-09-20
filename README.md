@@ -83,9 +83,13 @@ carsByParams(brand : String
 Мутации:
 
 newCar(brand : String
+	
 	model : String
+	
 	registrationNumber : String
+	
 	color : String
+	
 	yearOfIssue : Int) - выполняет добавление записи в базу данных. 
 
 deleteCar(id : Int) - удаляет запись из базы данных
