@@ -67,10 +67,15 @@ cars - получение всех автомобилей
 car(id: Int) - получение автомобиля по его идентификационному номеру
 
 carsByParams(brand : String
-    	model : String
-    	registrationNumber : String
-    	color : String
-    	yearFrom : Int
+    	
+	model : String
+    	
+	registrationNumber : String
+    	
+	color : String
+    	
+	yearFrom : Int
+	
 	yearTo : Int) - получение автомобилей, соответствующих параметрам запроса
 	
 ///////////////////////////
