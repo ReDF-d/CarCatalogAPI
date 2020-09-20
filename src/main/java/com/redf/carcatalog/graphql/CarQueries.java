@@ -38,11 +38,6 @@ public class CarQueries implements GraphQLQueryResolver {
     }
 
 
-    public CarEntity getCarByRegistrationNumber(String registrationNumber) {
-        logger.info("GraphQL getCarByRegNumber registrationNumber={}", registrationNumber);
-        return getCarService().getCarByRegistrationNumber(registrationNumber);
-    }
-
 
     public CarEntity getCar(Long id) {
         logger.info("GraphQL getCarById id={}", id);

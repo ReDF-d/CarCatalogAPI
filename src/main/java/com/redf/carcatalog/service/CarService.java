@@ -39,12 +39,6 @@ public class CarService {
     }
 
 
-    @Cacheable(value = "cars")
-    public CarEntity getCarByRegistrationNumber(String registrationNumber) {
-        Optional<CarEntity> car = getCarRepository().findByRegistrationNumber(registrationNumber);
-       return checkIfCarEntityPresent(car, registrationNumber);
-    }
-
 
     private CarEntity checkIfCarEntityPresent(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<CarEntity> car, String queryParameter) {
         if (car.isPresent()) {
