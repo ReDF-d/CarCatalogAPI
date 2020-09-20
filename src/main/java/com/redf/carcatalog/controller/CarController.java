@@ -61,8 +61,8 @@ public class CarController {
             logger.info("POST car BAD REQUEST");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST.getReasonPhrase());
         }
-        boolean created = getCarService().addCar(car);
-        if (!created)
+        car = getCarService().addCar(car);
+        if (car == null)
             return ResponseEntity.status(HttpStatus.CONFLICT).body(HttpStatus.CONFLICT.getReasonPhrase());
         else
             return ResponseEntity.status(HttpStatus.CREATED).body(HttpStatus.CREATED.getReasonPhrase());

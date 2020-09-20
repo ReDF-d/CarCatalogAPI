@@ -1,0 +1,37 @@
+schema {
+    query: CarQuery
+    mutation: CarMutation
+}
+
+type Car {
+    id: ID!
+    brand : String!
+    model : String!
+    registrationNumber : String!
+    color : String!
+    yearOfIssue : Int!
+    createdAt : String!
+}
+
+
+type CarQuery {
+    cars: [Car]
+    car(id: ID!): Car
+    carsByParams(brand : String, model : String, color : String, registrationNumber : String, yearFrom : Int, yearTo : Int) : [Car]
+    carByRegistrationNumber(registrationNumber: String!): Car
+}
+
+
+type CarMutation {
+    newCar(car: CarInput!): Car
+    deleteCar(id: ID!) : Boolean!
+}
+
+
+input CarInput {
+    brand : String
+    model : String
+    registrationNumber : String
+    color : String
+    yearOfIssue : Int
+}

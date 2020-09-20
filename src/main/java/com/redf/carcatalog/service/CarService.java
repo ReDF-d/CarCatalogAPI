@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,12 +34,24 @@ public class CarService {
 
     @Cacheable(value = "cars")
     public CarEntity getCarById(Long id) {
-        Optional car = getCarRepository().findById(id);
+        Optional<CarEntity> car = getCarRepository().findById(id);
+        return checkIfCarEntityPresent(car, id.toString());
+    }
+
+
+    @Cacheable(value = "cars")
+    public CarEntity getCarByRegistrationNumber(String registrationNumber) {
+        Optional<CarEntity> car = getCarRepository().findByRegistrationNumber(registrationNumber);
+       return checkIfCarEntityPresent(car, registrationNumber);
+    }
+
+
+    private CarEntity checkIfCarEntityPresent(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<CarEntity> car, String queryParameter) {
         if (car.isPresent()) {
             logger.info("GET car " + car.get().toString() + " OK");
-            return (CarEntity) car.get();
+            return car.get();
         } else {
-            logger.info("GET car " + id + " NOT FOUND");
+            logger.info("GET car " + queryParameter + " NOT FOUND");
             return null;
         }
     }
@@ -60,17 +71,23 @@ public class CarService {
     }
 
 
+    @Cacheable(value = "cars")
+    public List<CarEntity> getAllCars() {
+        return getCarRepository().findAll();
+    }
+
+
     @Transactional(propagation= Propagation.REQUIRES_NEW)
     @CacheEvict(value = "cars", allEntries = true)
-    public boolean addCar(CarEntity car) {
+    public CarEntity addCar(CarEntity car) {
         Optional existing = getCarRepository().findByRegistrationNumber(car.getRegistrationNumber());
         if (existing.isPresent()) {
             logger.info("POST car " + existing.toString() + " CONFLICT");
-            return false;
+            return null;
         } else {
             car = getCarRepository().save(car);
             logger.info("POST car " + car.toString() + " CREATED");
-            return true;
+            return car;
         }
     }
 
@@ -81,6 +98,7 @@ public class CarService {
             logger.info("DELETE car " + id + " NOT FOUND");
             return false;
         } else {
+            //noinspection OptionalGetWithoutIsPresent
             getCarRepository().delete(getCarRepository().findById(id).get());
             logger.info("DELETE car " + id + " NO CONTENT");
             return true;
