@@ -57,7 +57,7 @@ public class CarController {
 
     @PostMapping("/cars/add")
     public ResponseEntity addCar(@RequestBody CarEntity car) {
-        if (car.getId() != null || car.getCreatedAt() != null) {
+        if (car == null || car.getId() != null || car.getCreatedAt() != null) {
             logger.info("POST car BAD REQUEST");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST.getReasonPhrase());
         }
